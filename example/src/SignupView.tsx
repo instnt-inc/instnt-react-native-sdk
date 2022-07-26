@@ -39,8 +39,8 @@ export default function SignupView({config, setShowSignupForm}: SignupViewProps)
   const handleSignup = async () => {
     console.log('Signup button Pressed');
     const tempData: any = {"city": "Natick", "country": "USA", "email": "soubhratra@instnt.org", "firstName": "Soubhratra", "mobileNumber": "+1508-494-8925", "physicalAddress": "9 Peterson Rd", "state": "MA", "surName": "Das", "zip": "01760"};
-    setData(tempData);
-    console.log(tempData);
+    //setData(tempData);
+    //console.log(tempData);
     console.log("Instnttxnid: "+ instnttxnid);
     //setLoading(true);
     setWaitingDecision(true);
