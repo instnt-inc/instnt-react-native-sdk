@@ -1,4 +1,7 @@
 import { NativeModules, Platform } from 'react-native';
+import HelloWorld from './components//InstntSignupProvider/HelloWorld';
+import InstntSignupProvider from './components/InstntSignupProvider/InstntSignupProvider';
+import {submitSignupData} from './components/InstntSignupProvider/instnt';
 
 const LINKING_ERROR =
   `The package '@instnt/instnt-react-native-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -15,6 +18,8 @@ const InstntReactNativeSdk = NativeModules.InstntReactNativeSdk  ? NativeModules
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
+function multiply(a: number, b: number): Promise<number> {
   return InstntReactNativeSdk.multiply(a, b);
 }
+
+export {multiply, InstntSignupProvider, submitSignupData};

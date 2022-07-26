@@ -1,31 +1,25 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from '@instnt/instnt-react-native-sdk';
+import SignupConfig from './SignupConfig';
+import SignupView from './SignupView';
+import {Appbar} from 'react-native-paper';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const workflowId = 'v1639687041590101';
+  const serviceURL = 'https://dev2-api.instnt.org';
+  const [signupConfig, setSignupConfig] = React.useState({'workflowId': workflowId, 'serviceURL': serviceURL});
+  const [isSetup, setIsSetup] = React.useState(true);
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <>
+      <Appbar.Header>
+        <Appbar.Content title="Instnt Signup Demo" />
+      </Appbar.Header>
+      { isSetup 
+        ? <SignupConfig setConfig={setSignupConfig} setLoading={setIsSetup}/>
+        : <SignupView config={signupConfig} setShowSignupForm={(showForm) => setIsSetup(!showForm)}/> 
+      }
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
