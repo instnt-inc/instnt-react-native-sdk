@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 //import { SDK_VERSION } from '../../version';
 import { FingerprintJsProAgent } from '@fingerprintjs/fingerprintjs-pro-react-native';
@@ -9,7 +9,7 @@ const LIVE_SERVICE_URL = 'https://api.instnt.org';
 const propTypes = {
   workflowId: PropTypes.string.isRequired,
   isAsync: PropTypes.bool,
-  onInstntInit: PropTypes.func,
+  onInit: PropTypes.func,
   serviceURL: PropTypes.string,
   children: PropTypes.node,
 };
@@ -31,10 +31,14 @@ const InstntSignupProvider = ({
 }: InstntSignupProviderProps) => {
 
   const [instnttxnid, setInstnttxnid] = useState('');
+  const instnttxnidRef = useRef(instnttxnid);
+
   const [visitorId, setVisitorId] = useState('');
+  const visitorIdRef = useRef(visitorId);
+
 
   useEffect(() => {
-
+    console.log("isAsync: " + isAsync);
     (async () => {
       let url = serviceURL + '/public/transactions?format=json&sdk=react-native';
       try {
@@ -53,24 +57,26 @@ const InstntSignupProvider = ({
         const data = await response.json();
         if (response.ok) {
           setInstnttxnid(data.instnttxnid);
-          console.log("response:");
+          console.log("Instnt response:");
           console.log(data);
-          onInit?.(data);
           //Initializing FingerprintJS
-          //await getVisitorId();
-          return;
+          const fpJSVisitorId = await getVisitorId(data.fingerprintjs_browser_token);
+          setVisitorId(fpJSVisitorId);
+          console.log("visitorId: " + fpJSVisitorId);
+          console.log("Instnt initialized. instnttxnid: " + data.instnttxnid);
+          onInit && onInit?.(data);
         } 
       } catch (error: any) {
         console.log('Error while connecting to ' + url, error);
         throw { error: error.status };
       }
 
-      async function getVisitorId() {
+      async function getVisitorId(fingerprintjs_browser_token: string) {
         try {
-          const FingerprintJSClient = new FingerprintJsProAgent('uC2jNKwTbd1PbA22aLDr', 'us'); // Region may be 'us', 'eu', or 'ap'
-          const visitorId = await FingerprintJSClient.getVisitorId();
-          console.log("FPJS visitorId: " + visitorId);
-          setVisitorId(visitorId);
+          const FingerprintJSClient = new FingerprintJsProAgent(fingerprintjs_browser_token, 'us'); // Region may be 'us', 'eu', or 'ap'
+          const fpJSVisitorId = await FingerprintJSClient.getVisitorId();
+          setVisitorId(fpJSVisitorId);
+          return fpJSVisitorId;
         } catch (e: any) {
           console.error('Error: ', e);
           throw { error: e.status };

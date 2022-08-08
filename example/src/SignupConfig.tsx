@@ -21,7 +21,6 @@ export default function SignupConfig({setConfig, setLoading}: SignupConfigProps)
           style={{marginTop:10}}
           mode="contained" 
           onPress={() => {
-            console.log('Pressed')
             setConfig({'workflowId': workflowId, 'serviceURL': serviceURL})
             setLoading(false);
           }}

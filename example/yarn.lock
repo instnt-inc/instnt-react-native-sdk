@@ -1039,10 +1039,10 @@
     "deepmerge" "^3.2.0"
     "hoist-non-react-statics" "^3.3.0"
 
-"@fingerprintjs/fingerprintjs-pro-react-native@^1.0.2":
-  "integrity" "sha512-fyhFtxaItWMEIf6DAa+l5a8evXCL5SYnUVg/xEtuLoeXjEOz9C+j/1SwYNqBdJfXsg/AK/QajyhsgeY7Q1TEGw=="
-  "resolved" "https://registry.npmjs.org/@fingerprintjs/fingerprintjs-pro-react-native/-/fingerprintjs-pro-react-native-1.0.2.tgz"
-  "version" "1.0.2"
+"@fingerprintjs/fingerprintjs-pro-react-native@^1.0.4":
+  "integrity" "sha512-/amAduxTx/wBRCOtmTPA0v1fUq5QR4Ax34q0fw+AT9JvqTaCoQXOwlOzwrLxL9phur4BbyEcVaLJogwqXwliow=="
+  "resolved" "https://registry.npmjs.org/@fingerprintjs/fingerprintjs-pro-react-native/-/fingerprintjs-pro-react-native-1.0.4.tgz"
+  "version" "1.0.4"
 
 "@hapi/hoek@^9.0.0":
   "integrity" "sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ=="

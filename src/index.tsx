@@ -1,5 +1,4 @@
 import { NativeModules, Platform } from 'react-native';
-import HelloWorld from './components//InstntSignupProvider/HelloWorld';
 import InstntSignupProvider from './components/InstntSignupProvider/InstntSignupProvider';
 import {submitSignupData} from './components/InstntSignupProvider/instnt';
 
