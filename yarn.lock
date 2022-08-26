@@ -1266,11 +1266,6 @@
     "minimatch" "^3.1.2"
     "strip-json-comments" "^3.1.1"
 
-"@fingerprintjs/fingerprintjs-pro-react-native@^1.0.4":
-  "integrity" "sha512-/amAduxTx/wBRCOtmTPA0v1fUq5QR4Ax34q0fw+AT9JvqTaCoQXOwlOzwrLxL9phur4BbyEcVaLJogwqXwliow=="
-  "resolved" "https://registry.npmjs.org/@fingerprintjs/fingerprintjs-pro-react-native/-/fingerprintjs-pro-react-native-1.0.4.tgz"
-  "version" "1.0.4"
-
 "@hapi/hoek@^9.0.0":
   "integrity" "sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ=="
   "resolved" "https://registry.npmjs.org/@hapi/hoek/-/hoek-9.3.0.tgz"
@@ -8037,7 +8032,7 @@
     "object-assign" "^4.1.1"
     "react-is" "^16.12.0 || ^17.0.0"
 
-"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@17.0.2":
+"react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"

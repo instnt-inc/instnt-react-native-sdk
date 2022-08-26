@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 //import { SDK_VERSION } from '../../version';
-import { FingerprintJsProAgent } from '@fingerprintjs/fingerprintjs-pro-react-native';
+//import { FingerprintJsProAgent } from '@fingerprintjs/fingerprintjs-pro-react-native';
+import { FingerprintJsProAgent } from '../FingerprintJsPro/FingerprintJsProAgent';
 
 
 const LIVE_SERVICE_URL = 'https://api.instnt.org';
@@ -60,9 +61,17 @@ const InstntSignupProvider = ({
           console.log("Instnt response:");
           console.log(data);
           //Initializing FingerprintJS
-          const fpJSVisitorId = await getVisitorId(data.fingerprintjs_browser_token);
-          setVisitorId(fpJSVisitorId);
-          console.log("visitorId: " + fpJSVisitorId);
+          //const fpJSVisitorId = await getVisitorId(data.fingerprintjs_browser_token);
+          //setVisitorId(fpJSVisitorId);
+          if(! (global as any).instnt) {
+            (global as any).instnt = {}
+          }
+          (global as any).instnt.workflowId = workflowId;
+          (global as any).instnt.isAsync = isAsync;
+          (global as any).instnt.serviceURL = serviceURL;
+          //(global as any).instnt.visitorId = fpJSVisitorId;
+          (global as any).instnt.instnttxnid = data.instnttxnid;
+          //console.log("visitorId: " + fpJSVisitorId);
           console.log("Instnt initialized. instnttxnid: " + data.instnttxnid);
           onInit && onInit?.(data);
         } 
