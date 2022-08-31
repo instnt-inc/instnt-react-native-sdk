@@ -3,6 +3,9 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text , TextInput, Button,} from 'react-native-paper';
 
+import {NativeModules} from 'react-native';
+const {FingerprintjsModule} = NativeModules;
+
 interface SignupConfigProps {
   setConfig: (config: any) => void;
   setLoading: (loading: boolean) => void;
@@ -11,7 +14,13 @@ interface SignupConfigProps {
 export default function SignupConfig({setConfig, setLoading}: SignupConfigProps) {
   const [workflowId, setWorkflowId] = React.useState('v1639687041590101');
   const [serviceURL, setServiceURL] = React.useState('https://dev2-api.instnt.org');
-
+  const fingerprintJsBrowserToken = 'uC2jNKwTbd1PbA22aLDr';
+  const callFingerprintjs = async () => {
+    let initResponse = await FingerprintjsModule.init(fingerprintJsBrowserToken);
+    let response = await FingerprintjsModule.getResponse();
+    console.log(response);
+  };
+  
   return (
     <View style={{flex:1, justifyContent:"center"}}>
       <View style={{width: "85%", alignSelf:"center"}}>
@@ -23,6 +32,7 @@ export default function SignupConfig({setConfig, setLoading}: SignupConfigProps)
           onPress={() => {
             setConfig({'workflowId': workflowId, 'serviceURL': serviceURL})
             setLoading(false);
+            callFingerprintjs();
           }}
         >
           Getting Started
