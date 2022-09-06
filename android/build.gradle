@@ -126,13 +126,20 @@ repositories {
   }
 }
 
+allprojects {
+  repositories {
+    maven { url 'https://jitpack.io' }
+  }
+}
 
 dependencies {
     //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+
   implementation 'com.github.fingerprintjs:fingerprintjs-pro-android:v2.0'
-  //implementation "com.fingerprint.android:pro:2.1.0"
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  // If you use Java for you project, add below to make fingerprintjs working
+  def kotlin_version = "1.6.20"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 if (isNewArchitectureEnabled()) {
