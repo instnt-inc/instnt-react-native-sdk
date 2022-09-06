@@ -1,4 +1,4 @@
-package com.instntinstntreactnativesdk
+package org.instnt.accept.instntinstntreactnativesdk
 
 import com.facebook.react.bridge.*
 import com.fingerprintjs.android.fpjs_pro.Configuration

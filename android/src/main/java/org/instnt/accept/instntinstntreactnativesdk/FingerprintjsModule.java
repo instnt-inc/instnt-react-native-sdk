@@ -1,4 +1,4 @@
-package com.instntinstntreactnativesdk;
+package org.instnt.accept.instntinstntreactnativesdk;
 
 import android.content.Context;
 

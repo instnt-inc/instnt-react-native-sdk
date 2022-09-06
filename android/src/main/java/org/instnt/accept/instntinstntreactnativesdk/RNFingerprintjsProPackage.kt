@@ -1,4 +1,4 @@
-package com.instntinstntreactnativesdk
+package org.instnt.accept.instntinstntreactnativesdk
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule

@@ -146,6 +146,6 @@ if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
     libraryName = "InstntReactNativeSdk"
-    codegenJavaPackageName = "com.instntinstntreactnativesdk"
+    codegenJavaPackageName = "org.instnt.accept.instntinstntreactnativesdk"
   }
 }

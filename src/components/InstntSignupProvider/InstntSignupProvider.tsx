@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 //import { SDK_VERSION } from '../../version';
 //import { FingerprintJsProAgent } from '@fingerprintjs/fingerprintjs-pro-react-native';
 import { FingerprintJsProAgent } from '../FingerprintJsPro/FingerprintJsProAgent';
-
+import {NativeModules} from 'react-native';
+const {FingerprintjsModule} = NativeModules;
 
 const LIVE_SERVICE_URL = 'https://api.instnt.org';
 
@@ -63,6 +64,15 @@ const InstntSignupProvider = ({
           //Initializing FingerprintJS
           //const fpJSVisitorId = await getVisitorId(data.fingerprintjs_browser_token);
           //setVisitorId(fpJSVisitorId);
+          let initResponse = await FingerprintjsModule.init(data.fingerprintjs_browser_token);
+          let response = await FingerprintjsModule.getResponse();
+          try {
+            const jsonResponse = JSON.parse(response);
+            setVisitorId(jsonResponse['visitorId']);
+          } catch (error) {
+            console.log('Fingeprintjs response is not correct json. Response : ' + response);
+          }
+
           if(! (global as any).instnt) {
             (global as any).instnt = {}
           }
