@@ -1,5 +1,5 @@
 {
-  "name": "@instnt/instnt-react-native-sdk-example",
+  "name": "Example",
   "description": "Example app for @instnt/instnt-react-native-sdk",
   "version": "0.0.1",
   "private": true,
@@ -11,6 +11,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@instnt/instnt-react-native-sdk": "file:..",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",

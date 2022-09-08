@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { InstntSignupProvider, submitSignupData} from '@instnt/instnt-react-native-sdk';
+import { FingerprintJsProAgent } from '@instnt/instnt-react-native-sdk';
 import { Text , TextInput, ActivityIndicator, Button, Dialog, Portal, Modal, ProgressBar, List} from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
