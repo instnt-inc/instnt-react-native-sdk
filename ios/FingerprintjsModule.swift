@@ -1,31 +1,51 @@
 //
-//  RNFingerprintjsPro.swift
-//  RNFingerprintjsPro
+//  FingerprintjsModule.swift
+//  FingerprintjsModule
 //
 //  Created by Denis Evgrafov on 01.02.2022.
 //  Copyright © 2022 Facebook. All rights reserved.
 //
 import FingerprintPro
 
-@objc(RNFingerprintjsPro)
-class RNFingerprintjsPro: NSObject {
+@objc(FingerprintjsModule)
+class FingerprintjsModule: NSObject {
     private var fpjsClient: FingerprintClientProviding?
 
     override init() {
         super.init()
     }
 
-    @objc(init:region:endpoint:extendedResponseFormat:pluginVersion:)
-    public required init(_ apiToken: String, _ region: String? = "us", _ endpoint: String? = nil, _ extendedResponseFormat: Bool = false, _ pluginVersion: String) {
-        let region = RNFingerprintjsPro.parseRegion(region, endpoint: endpoint)
+    @objc(init:)
+    public required init(_ apiToken: String) {
+        var passedRegion = "us"
+        let endpoint = "https://dev2-api.instnt.org/public/"
+        let extendedResponseFormat = false 
+        let pluginVersion = "1.0.0"
+
+        let region = FingerprintjsModule.parseRegion(passedRegion, endpoint: endpoint)
         let integrationInfo = [("fingerprint-pro-react-native", pluginVersion)]
         let configuration = Configuration(apiKey: apiToken, region: region, integrationInfo: integrationInfo, extendedResponseFormat: extendedResponseFormat)
         fpjsClient = FingerprintProFactory.getInstance(configuration)
     }
 
+    /*
+    @objc(init:region:endpoint:extendedResponseFormat:pluginVersion:)
+    public required init(_ apiToken: String, _ region: String? = "us", _ endpoint: String? = "https://dev2-api.instnt.org/public/", _ extendedResponseFormat: Bool = false, _ pluginVersion: String) {
+        let region = FingerprintjsModule.parseRegion(region, endpoint: endpoint)
+        let integrationInfo = [("fingerprint-pro-react-native", pluginVersion)]
+        let configuration = Configuration(apiKey: apiToken, region: region, integrationInfo: integrationInfo, extendedResponseFormat: extendedResponseFormat)
+        fpjsClient = FingerprintProFactory.getInstance(configuration)
+    }
+    */
+
+    @objc(testMethod:resolve:rejecter:)
+    public func testMethod(key: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        resolve(key)
+    }
+
     @objc(getVisitorId:linkedId:resolve:rejecter:)
     public func getVisitorId(tags: [String: Any]?, linkedId: String?, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-        let metadata = RNFingerprintjsPro.prepareMetadata(linkedId, tags: tags)
+        let metadata = FingerprintjsModule.prepareMetadata(linkedId, tags: tags)
         fpjsClient?.getVisitorId(metadata) { result in
             switch result {
             case let .failure(error):
@@ -40,7 +60,7 @@ class RNFingerprintjsPro: NSObject {
 
     @objc(getVisitorData:linkedId:resolve:rejecter:)
         public func getVisitorData(tags: [String: Any]?, linkedId: String?, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
-            let metadata = RNFingerprintjsPro.prepareMetadata(linkedId, tags: tags)
+            let metadata = FingerprintjsModule.prepareMetadata(linkedId, tags: tags)
             fpjsClient?.getVisitorIdResponse(metadata) { result in
                 switch result {
                 case let .failure(error):

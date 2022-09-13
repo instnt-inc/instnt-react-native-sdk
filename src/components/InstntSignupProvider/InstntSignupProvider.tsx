@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 //import { SDK_VERSION } from '../../version';
 //import { FingerprintJsProAgent } from '@fingerprintjs/fingerprintjs-pro-react-native';
-import { FingerprintJsProAgent } from '../FingerprintJsPro/FingerprintJsProAgent';
+//import { FingerprintJsProAgent } from '../FingerprintJsPro/FingerprintJsProAgent';
 import {NativeModules} from 'react-native';
 const {FingerprintjsModule} = NativeModules;
 
@@ -64,7 +64,15 @@ const InstntSignupProvider = ({
           //Initializing FingerprintJS
           //const fpJSVisitorId = await getVisitorId(data.fingerprintjs_browser_token);
           //setVisitorId(fpJSVisitorId);
+
+          let testVar = await FingerprintjsModule.testMethod("test")
+
+          console.log("I am here");
+
+          console.log("testVar", testVar);
+
           let initResponse = await FingerprintjsModule.init(data.fingerprintjs_browser_token);
+          console.log("Here-", initResponse);
           let response = await FingerprintjsModule.getResponse();
           try {
             const jsonResponse = JSON.parse(response);
@@ -90,6 +98,8 @@ const InstntSignupProvider = ({
         throw { error: error.status };
       }
 
+
+/*
       async function getVisitorId(fingerprintjs_browser_token: string) {
         try {
           const FingerprintJSClient = new FingerprintJsProAgent(fingerprintjs_browser_token, 'us'); // Region may be 'us', 'eu', or 'ap'
@@ -100,7 +110,8 @@ const InstntSignupProvider = ({
           console.error('Error: ', e);
           throw { error: e.status };
         }
-      }
+      } */
+      
     })();
     return () => {
       // do any cleanup like script unloading etc

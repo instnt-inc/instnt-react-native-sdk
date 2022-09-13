@@ -34,6 +34,15 @@ export class FingerprintJsProAgent {
     }
   }
 
+  public testMethod(key: string): Promise<VisitorId> {
+    try {
+      return NativeModules.RNFingerprintjsPro.testMethod(key)
+    } catch (e) {
+      console.error('RNFingerprintjsPro testMethod error: ', e)
+      throw new Error('RNFingerprintjsPro testMethod error: ' + e)
+    }
+  }
+
   /**
    * Returns visitor identification data based on the request options
    * Provide `extendedResponseFormat` option in constructor to get response in [extended format]{@link https://dev.fingerprint.com/docs/native-android-integration#response-format}
