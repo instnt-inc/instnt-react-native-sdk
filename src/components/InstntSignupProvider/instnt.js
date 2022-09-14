@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 const submitSignupData = async (data = {}, instnttxnid, workflowId) => {
   data['instnt_token'] = getToken();
   data['instnttxnid'] = instnttxnid;
@@ -49,7 +51,7 @@ const getToken = () => {
     data['debug'] = global.instnt.debug;
   }
   console.log("instnt token before encoding: " + JSON.stringify(data));
-  const token = btoa(JSON.stringify(data));
+  const token = Buffer.from(JSON.stringify(data)).toString('base64')
   return token;
 }
 

@@ -74,7 +74,7 @@ const InstntSignupProvider = ({
           
           let response = await FingerprintjsModule.getResponse();
 
-          console.log("get visitor id response -", response);
+          console.log("getResponse -", response);
 
           var myVisitorID = "";
           try {
@@ -94,10 +94,6 @@ const InstntSignupProvider = ({
           (global as any).instnt.serviceURL = serviceURL;
 
           (global as any).instnt.visitorId = myVisitorID;
-
-          console.log("visitor id 1 - ", myVisitorID);
-
-          console.log("visitor id global - ", (global as any).instnt.visitorId);
           
           //(global as any).instnt.visitorId = fpJSVisitorId;
           (global as any).instnt.instnttxnid = data.instnttxnid;

@@ -71,22 +71,47 @@ class FingerprintjsModule: NSObject {
                 case let .failure(error):
                     reject("Error: ", error.localizedDescription, error)
                 case let .success(visitorDataResponse):
+        
                     let tuple = [
                         visitorDataResponse.requestId,
                         visitorDataResponse.confidence,
                         visitorDataResponse.asJSON()
                     ] as [Any]
-                    //resolve(tuple)
-
-                    let response: [String: Any] = [
-                        "visitorId": visitorDataResponse.visitorId,
-                        "requestId": visitorDataResponse.requestId
-                    ]
-
-                    //resolve(response)
-
                     resolve(visitorDataResponse.asJSON())
                     
+                    // let jsonText = visitorDataResponse.asJSON()
+                    //        var dictonary:NSDictionary?
+                           
+                    //        if let data = jsonText.data(using: String.Encoding.utf8) {
+                               
+                    //            do {
+                    //                dictonary = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject] as NSDictionary?
+                               
+                    //                if let myDictionary = dictonary
+                    //                {
+                    //                     print(" visitorFound: \(myDictionary["visitorFound"]!)")
+                    //                    let response: [String: Any] = [
+                    //                        "visitorId": visitorDataResponse.visitorId,
+                    //                        "requestId": visitorDataResponse.requestId,
+                    //                        "visitorFound": (myDictionary["visitorFound"]!) as! Int == 1 ? true : false
+                    //                    ]
+
+                    //                    let dictionary = response
+                    //                    if let theJSONData = try? JSONSerialization.data(
+                    //                        withJSONObject: dictionary,
+                    //                        options: []) {
+                    //                        let theJSONText = String(data: theJSONData,
+                    //                                                   encoding: .ascii)
+                    //                        print("JSON string = \(theJSONText!)")
+                    //                        resolve(theJSONText)
+                    //                    }
+                                      
+                    //                }
+                    //            } catch let error as NSError {
+                    //                print(error)
+                    //            }
+                    //        }
+
                 }
             }
     }
