@@ -65,18 +65,23 @@ const InstntSignupProvider = ({
           //const fpJSVisitorId = await getVisitorId(data.fingerprintjs_browser_token);
           //setVisitorId(fpJSVisitorId);
 
-          let testVar = await FingerprintjsModule.testMethod("test")
+          //let testVar = await FingerprintjsModule.testMethod("test")
+          //console.log("testVar", testVar);
 
-          console.log("I am here");
-
-          console.log("testVar", testVar);
+          //console.log("browser_token", data.fingerprintjs_browser_token);
 
           let initResponse = await FingerprintjsModule.init(data.fingerprintjs_browser_token);
-          console.log("Here-", initResponse);
+          
           let response = await FingerprintjsModule.getResponse();
+
+          console.log("get visitor id response -", response);
+
+          var myVisitorID = "";
           try {
             const jsonResponse = JSON.parse(response);
             setVisitorId(jsonResponse['visitorId']);
+            myVisitorID = jsonResponse['visitorId'];
+
           } catch (error) {
             console.log('Fingeprintjs response is not correct json. Response : ' + response);
           }
@@ -87,6 +92,13 @@ const InstntSignupProvider = ({
           (global as any).instnt.workflowId = workflowId;
           (global as any).instnt.isAsync = isAsync;
           (global as any).instnt.serviceURL = serviceURL;
+
+          (global as any).instnt.visitorId = myVisitorID;
+
+          console.log("visitor id 1 - ", myVisitorID);
+
+          console.log("visitor id global - ", (global as any).instnt.visitorId);
+          
           //(global as any).instnt.visitorId = fpJSVisitorId;
           (global as any).instnt.instnttxnid = data.instnttxnid;
           //console.log("visitorId: " + fpJSVisitorId);

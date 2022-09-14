@@ -17,15 +17,19 @@ class FingerprintjsModule: NSObject {
 
     @objc(init:)
     public required init(_ apiToken: String) {
+        
         var passedRegion = "us"
-        let endpoint = "https://dev2-api.instnt.org/public/"
+        
         let extendedResponseFormat = false 
         let pluginVersion = "1.0.0"
 
-        let region = FingerprintjsModule.parseRegion(passedRegion, endpoint: endpoint)
+        //let endpoint = nil // "https://api.fpjs.io"
+
+        let region = FingerprintjsModule.parseRegion(passedRegion, endpoint: nil)
         let integrationInfo = [("fingerprint-pro-react-native", pluginVersion)]
         let configuration = Configuration(apiKey: apiToken, region: region, integrationInfo: integrationInfo, extendedResponseFormat: extendedResponseFormat)
         fpjsClient = FingerprintProFactory.getInstance(configuration)
+
     }
 
     /*
@@ -56,6 +60,35 @@ class FingerprintjsModule: NSObject {
                 resolve(visitorId)
             }
         }
+    }
+
+    // Created new function 
+    @objc(getResponse:rejecter:)
+    public func getResponse(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        //let metadata = nil
+        fpjsClient?.getVisitorIdResponse(nil) { result in
+                switch result {
+                case let .failure(error):
+                    reject("Error: ", error.localizedDescription, error)
+                case let .success(visitorDataResponse):
+                    let tuple = [
+                        visitorDataResponse.requestId,
+                        visitorDataResponse.confidence,
+                        visitorDataResponse.asJSON()
+                    ] as [Any]
+                    //resolve(tuple)
+
+                    let response: [String: Any] = [
+                        "visitorId": visitorDataResponse.visitorId,
+                        "requestId": visitorDataResponse.requestId
+                    ]
+
+                    //resolve(response)
+
+                    resolve(visitorDataResponse.asJSON())
+                    
+                }
+            }
     }
 
     @objc(getVisitorData:linkedId:resolve:rejecter:)
