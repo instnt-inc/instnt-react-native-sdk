@@ -16,7 +16,7 @@ type SignupDataType = {
 };
 
 export default function SignupView({config, setShowSignupForm}: SignupViewProps){
-  const workflowId = 'v1639687041590101';
+  const workflowId = 'v1663828106969043';
   const serviceURL = 'https://dev2-api.instnt.org';
   const [result, setResult] = React.useState<number | undefined>();
   const [instnttxnid, setInstnttxnid] = React.useState<String>("");
@@ -37,13 +37,13 @@ export default function SignupView({config, setShowSignupForm}: SignupViewProps)
 
   const handleSignup = async () => {
     console.log('Signup button Pressed');
-    const tempData: any = {"city": "Natick", "country": "USA", "email": "soubhratra@instnt.org", "firstName": "Soubhratra", "mobileNumber": "+1508-494-8925", "physicalAddress": "9 Peterson Rd", "state": "MA", "surName": "Das", "zip": "01760"};
-    //setData(tempData);
-    //console.log(tempData);
+    //const tempData: any = {"city": "Natick", "country": "USA", "email": "soubhratra@instnt.org", "firstName": "Soubhratra", "mobileNumber": "+1508-494-8925", "physicalAddress": "9 Peterson Rd", "state": "MA", "surName": "Das", "zip": "01760"};
+    console.log('data...', data)
     console.log("Instnttxnid: "+ instnttxnid);
     //setLoading(true);
     setWaitingDecision(true);
-    const response: any = await submitSignupData(tempData, instnttxnid, workflowId);
+    console.log('form data', data )
+    const response: any = await submitSignupData(data, instnttxnid, workflowId);
     console.log("submit response: "+ JSON.stringify(response));
     setSubmitResponse(response);
     console.log("decision: " + response.data.decision);

@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-//import { SDK_VERSION } from '../../version';
-//import { FingerprintJsProAgent } from '@fingerprintjs/fingerprintjs-pro-react-native';
-//import { FingerprintJsProAgent } from '../FingerprintJsPro/FingerprintJsProAgent';
 import {NativeModules} from 'react-native';
 const {FingerprintjsModule} = NativeModules;
 
@@ -33,16 +30,12 @@ const InstntSignupProvider = ({
 }: InstntSignupProviderProps) => {
 
   const [instnttxnid, setInstnttxnid] = useState('');
-  const instnttxnidRef = useRef(instnttxnid);
-
-  const [visitorId, setVisitorId] = useState('');
-  const visitorIdRef = useRef(visitorId);
-
+  let visitorId = "";
 
   useEffect(() => {
-    console.log("isAsync: " + isAsync);
     (async () => {
       let url = serviceURL + '/public/transactions?format=json&sdk=react-native';
+      console.log('URL', url)
       try {
         const response = await fetch(url, {
           method: 'POST',
@@ -57,30 +50,23 @@ const InstntSignupProvider = ({
           }),
         });
         const data = await response.json();
-        if (response.ok) {
-          setInstnttxnid(data.instnttxnid);
-          console.log("Instnt response:");
-          console.log(data);
-          //Initializing FingerprintJS
-          //const fpJSVisitorId = await getVisitorId(data.fingerprintjs_browser_token);
-          //setVisitorId(fpJSVisitorId);
-
-          //let testVar = await FingerprintjsModule.testMethod("test")
-          //console.log("testVar", testVar);
-
-          //console.log("browser_token", data.fingerprintjs_browser_token);
-
-          let initResponse = await FingerprintjsModule.init(data.fingerprintjs_browser_token);
+        if(response.ok) {
           
-          let response = await FingerprintjsModule.getResponse();
-
-          console.log("getResponse -", response);
-
-          var myVisitorID = "";
           try {
-            const jsonResponse = JSON.parse(response);
-            setVisitorId(jsonResponse['visitorId']);
-            myVisitorID = jsonResponse['visitorId'];
+            setInstnttxnid(data.instnttxnid);
+            console.log('instnttxnid', data.instnttxnid)
+            console.log("Instnt response:");
+            console.log(data);
+
+          await FingerprintjsModule.init(data.fingerprintjs_browser_token);
+          
+          const fingerPrintResponse = await FingerprintjsModule.getResponse();
+
+          console.log("fingerPrintResponse", fingerPrintResponse);
+
+            const jsonResponse = JSON.parse(fingerPrintResponse);
+            visitorId = jsonResponse['visitorId'];
+            console.log('visitorId', visitorId)
 
           } catch (error) {
             console.log('Fingeprintjs response is not correct json. Response : ' + response);
@@ -92,12 +78,9 @@ const InstntSignupProvider = ({
           (global as any).instnt.workflowId = workflowId;
           (global as any).instnt.isAsync = isAsync;
           (global as any).instnt.serviceURL = serviceURL;
+          (global as any).instnt.visitorId = visitorId;
 
-          (global as any).instnt.visitorId = myVisitorID;
-          
-          //(global as any).instnt.visitorId = fpJSVisitorId;
           (global as any).instnt.instnttxnid = data.instnttxnid;
-          //console.log("visitorId: " + fpJSVisitorId);
           console.log("Instnt initialized. instnttxnid: " + data.instnttxnid);
           onInit && onInit?.(data);
         } 
@@ -105,26 +88,13 @@ const InstntSignupProvider = ({
         console.log('Error while connecting to ' + url, error);
         throw { error: error.status };
       }
-
-
-/*
-      async function getVisitorId(fingerprintjs_browser_token: string) {
-        try {
-          const FingerprintJSClient = new FingerprintJsProAgent(fingerprintjs_browser_token, 'us'); // Region may be 'us', 'eu', or 'ap'
-          const fpJSVisitorId = await FingerprintJSClient.getVisitorId();
-          setVisitorId(fpJSVisitorId);
-          return fpJSVisitorId;
-        } catch (e: any) {
-          console.error('Error: ', e);
-          throw { error: e.status };
-        }
-      } */
-      
     })();
+
     return () => {
       // do any cleanup like script unloading etc
     };
   }, []);
+
   return (
     <React.Fragment>
       {children}
