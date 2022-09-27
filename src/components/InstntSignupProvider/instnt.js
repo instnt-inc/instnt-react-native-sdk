@@ -4,27 +4,29 @@ const submitSignupData = async (data = {}, instnttxnid, workflowId) => {
   data['instnt_token'] = getToken();
   data['instnttxnid'] = instnttxnid;
   data['form_key'] = workflowId;
-  const url = 'https://dev2-api.instnt.org/public/submitformdata/v1.0';
-  console.log('payload body', data)
+  const url = 'https://dev2-api.instnt.org/public/transactions/' + instnttxnid;
+  console.log('payload body', data);
 
   let headers = new Headers();
-  headers.append("Content-Type", "application/json");
+  headers.append('Content-Type', 'application/json');
 
   let formInput = JSON.stringify(data);
 
   let requestOptions = {
-    method: 'POST',
+    method: 'PUT',
     headers: headers,
     body: formInput,
-    redirect: 'follow'
+    redirect: 'follow',
   };
   return await submitTransaction(url, requestOptions);
-}
+};
 
 const submitVerifyData = async (data = {}, instnttxnid) => {
   data['instnt_token'] = getToken();
   data['instnttxnid'] = instnttxnid;
-  const url = 'https://dev2-api.instnt.org/public/transactions/verify/' + instnttxnid;
+  const url =
+    'https://dev2-api.instnt.org/public/transactions/verify/' + instnttxnid;
+  // eslint-disable-next-line no-undef
   const submitRequest = new Request(url, {
     headers: {
       'Accept': 'application/json',
@@ -39,8 +41,14 @@ const submitVerifyData = async (data = {}, instnttxnid) => {
 };
 
 const getToken = () => {
-  if (!global.instnt || !global.instnt.workflowId || !global.instnt.instnttxnid) {
-    throw new Exception("Instnt not initialized properly. Please call appropriate SDK component/function to initialize Instnt.");
+  if (
+    !global.instnt ||
+    !global.instnt.workflowId ||
+    !global.instnt.instnttxnid
+  ) {
+    throw new Exception(
+      'Instnt not initialized properly. Please call appropriate SDK component/function to initialize Instnt.'
+    );
   }
   const data = {};
   data.form_key = global.instnt.workflowId;
