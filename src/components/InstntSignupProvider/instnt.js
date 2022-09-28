@@ -51,7 +51,7 @@ const getToken = () => {
     data['debug'] = global.instnt.debug;
   }
   console.log("instnt token before encoding: " + JSON.stringify(data));
-  const token = Buffer.from(JSON.stringify(data)).toString('base64')
+  const token = Buffer.from(JSON.stringify(data)).toString('base64');
   return token;
 }
 
@@ -71,6 +71,80 @@ const submitTransaction =  async (submitRequest) => {
   }
 }
 
+const sendOTP = async (mobileNumber) => {
+  const serviceURL = 'https://dev2-api.instnt.org';
+  //Check is mobile number field available then validate it
+  if (mobileNumber && mobileNumber.length < 1) {
+      console.log('<------SEND OTP API END POINT-------> INVALID MOBILE NUMBER')
+      return false;
+  }
+  const url = serviceURL + '/public/transactions/' + global.instnt.instnttxnid + '/otp';
+
+  const requestPayload = {
+      "phone": mobileNumber
+  }
+  console.log("sendOTP requestPayload: ", requestPayload);
+  try {
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestPayload)
+      });
+      const data = await response.json();
+      if (response.ok) {
+          if (data && data.response && data.response.errors && data.response.errors.length == 0) {
+             console.log('OTP SENT SUCCESSFULLY')
+          } 
+      } else {
+        console.log('OTP SENT SUCCESSFULLY')
+      }
+  } catch (error) {
+      console.log("Error while connecting to " + url, error);
+  }
+  return () => { }
+}
+
+const verifyOTP = async (mobileNumber, otpCode) => {
+  
+  const serviceURL = 'https://dev2-api.instnt.org';
+  const url = serviceURL + '/public/transactions/' + global.instnt.instnttxnid + '/otp';
+  
+  if (typeof otpCode != "string" || otpCode.length != 6) {
+      console.log('Received invalid otpCode ')
+      return;
+  }
+
+  const requestPayload = {
+      "phone": mobileNumber,
+      "otp": otpCode,
+      "isVerify": true
+  }
+  console.log("verifyOTP requestPayload: ", requestPayload);
+  try {
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestPayload)
+      });
+      const data = await response.json();
+      if (response.ok) {
+          if (data && data.response && data.response.errors && data.response.errors.length == 0) {
+              console.log('OTP Verified Successfully ')
+          }
+      } 
+  } catch (error) {
+      console.log("Error while connecting to " + url, error);
+  }
+}
+
 export {
-  submitSignupData
+  submitSignupData,
+  sendOTP,
+  verifyOTP
 }

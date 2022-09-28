@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 //import { FingerprintJsProAgent } from '@fingerprintjs/fingerprintjs-pro-react-native';
 //import { FingerprintJsProAgent } from '../FingerprintJsPro/FingerprintJsProAgent';
 import {NativeModules} from 'react-native';
+import { setGlobalVar , globalVarModel} from './global';
+import { SDK_VERSION } from '../../version';
 const {FingerprintjsModule} = NativeModules;
 
 const LIVE_SERVICE_URL = 'https://api.instnt.org';
@@ -40,7 +42,9 @@ const InstntSignupProvider = ({
 
 
   useEffect(() => {
+    console.log(`On-boarding Instnt Initialization With React-Native SDK version ${SDK_VERSION}`)
     console.log("isAsync: " + isAsync);
+    setGlobalVar({});
     (async () => {
       let url = serviceURL + '/public/transactions?format=json&sdk=react-native';
       try {
@@ -86,21 +90,23 @@ const InstntSignupProvider = ({
             console.log('Fingeprintjs response is not correct json. Response : ' + response);
           }
 
-          if(! (global as any).instnt) {
-            (global as any).instnt = {}
-          }
-          (global as any).instnt.workflowId = workflowId;
-          (global as any).instnt.isAsync = isAsync;
-          (global as any).instnt.serviceURL = serviceURL;
 
-          (global as any).instnt.visitorId = myVisitorID;
+          if(! (globalVarModel as any).instnt) {
+            (globalVarModel as any).instnt = {}
+          }
+          (globalVarModel as any).instnt.workflowId = workflowId;
+          (globalVarModel as any).instnt.isAsync = isAsync;
+          (globalVarModel as any).instnt.serviceURL = serviceURL;
+
+          (globalVarModel as any).instnt.visitorId = myVisitorID;
           
           //(global as any).instnt.visitorId = fpJSVisitorId;
-          (global as any).instnt.instnttxnid = data.instnttxnid;
+          (globalVarModel as any).instnt.instnttxnid = data.instnttxnid;
           //console.log("visitorId: " + fpJSVisitorId);
+          setGlobalVar(globalVarModel);
           console.log("Instnt initialized. instnttxnid: " + data.instnttxnid);
           onInit && onInit?.(data);
-        } 
+        }
       } catch (error: any) {
         console.log('Error while connecting to ' + url, error);
         throw { error: error.status };

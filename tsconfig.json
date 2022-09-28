@@ -10,7 +10,7 @@
     "importsNotUsedAsValues": "preserve",
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["esnext"],
+    "lib": ["esnext","DOM","WebWorker"],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,

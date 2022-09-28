@@ -1,6 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import InstntSignupProvider from './components/InstntSignupProvider/InstntSignupProvider';
-import {submitSignupData} from './components/InstntSignupProvider/instnt';
+import {submitSignupData, sendOTP, verifyOTP} from './components/InstntSignupProvider/instnt_library';
 import { FingerprintJsProAgent } from './components/FingerprintJsPro/FingerprintJsProAgent'; ///FingerprintJsPro/FingerprintJsProAgent
 
 const LINKING_ERROR =
@@ -19,4 +19,4 @@ const InstntReactNativeSdk = NativeModules.InstntReactNativeSdk  ? NativeModules
     );
 
 
-export {InstntSignupProvider, submitSignupData, FingerprintJsProAgent};
+export {InstntSignupProvider, submitSignupData, sendOTP,verifyOTP,FingerprintJsProAgent};
