@@ -53,6 +53,7 @@ describe('Get Submit Transaction When Getting Response From API Calling ', ()=>{
     describe('Getting Response from API Calling',()=>{
         const apiSuccessResponse = {instnt: {},ok:200};
         const unmockedFetch = global.fetch;
+        const unmockedHeaders = global.Headers;
         beforeEach(()=>{
             // adding mock for fetch request
             global.fetch = jest.fn(()=>
@@ -60,23 +61,48 @@ describe('Get Submit Transaction When Getting Response From API Calling ', ()=>{
                     json: ()=>Promise.resolve(apiSuccessResponse)
                 })
             );
+            // define `append` as a mocked fn
+            const append = jest.fn();
+            // set test `Headers`
+            global.Headers = () => ({
+                append: append,
+            });
         })
 
         it('should call submit transaction from submit signup data', async ()=>{
             const url = `${BASE_URL}${SUBMIT_SIGNUP_END_POINT}` + instnttxnid;
-            const submitSignupData = await submitTransaction(requestedUrlObject(url,data));
+            const header = new Headers();
+            header.append('Content-Type', 'application/json');
+            const formInput = JSON.stringify(data);
+            const requestOptions = {
+                method: 'PUT',
+                headers: header,
+                body: formInput,
+                redirect: 'follow',
+            };
+            const submitSignupData = await submitTransaction(url,requestOptions);
             expect(submitSignupData).toMatchObject(apiSuccessResponse);
             expect(fetch).toHaveBeenCalledTimes(1);
         })
 
         it('should call submit transaction from submit verify data', async ()=>{
             const url = `${BASE_URL}${SUBMIT_VERIFY_END_POINT}` + instnttxnid;
-            const submitVerifyData = await submitTransaction(requestedUrlObject(url,data));
+            const header = new Headers();
+            header.append('Content-Type', 'application/json');
+            const formInput = JSON.stringify(data);
+            const requestOptions = {
+                method: 'PUT',
+                headers: header,
+                body: formInput,
+                redirect: 'follow',
+            };
+            const submitVerifyData = await submitTransaction(url,requestOptions);
             expect(submitVerifyData).toMatchObject(apiSuccessResponse);
             expect(fetch).toHaveBeenCalledTimes(1);
         })
         afterAll(()=>{
-            global.fetch =unmockedFetch;
+            global.fetch = unmockedFetch;
+            global.Headers = unmockedHeaders;
         })
     });
 })
@@ -85,17 +111,33 @@ describe('Get Submit Transaction When Getting No Response From API Calling ',()=
     describe('Getting No Response from API Calling',()=>{
         const apiErrorMessage = {error:'Error During Submit Transaction'};
         const unmockedErrorFetch = global.fetch;
+        const unmockedHeaders = global.Headers;
         beforeEach(async ()=>{
             // adding mock for fetch request
             global.fetch = jest.fn(() => Promise.reject({
                 error: apiErrorMessage.error
             }));
+            // define `append` as a mocked fn
+            const append = jest.fn();
+            // set test `Headers`
+            global.Headers = () => ({
+                append: append,
+            });
         })
 
         it('should call submit transaction from submit signup data', async ()=>{
             const url = `${BASE_URL}${SUBMIT_SIGNUP_END_POINT}` + instnttxnid;
+            const header = new Headers();
+            header.append('Content-Type', 'application/json');
+            const formInput = JSON.stringify(data);
+            const requestOptions = {
+                method: 'PUT',
+                headers: header,
+                body: formInput,
+                redirect: 'follow',
+            };
             try{
-                await submitTransaction(requestedUrlObject(url,data));
+                await submitTransaction(url,requestOptions);
             }catch(error){
                 expect(error.error).toMatchObject(apiErrorMessage);
             }
@@ -104,8 +146,17 @@ describe('Get Submit Transaction When Getting No Response From API Calling ',()=
 
         it('should call submit transaction from submit verify data', async ()=>{
             const url = `${BASE_URL}${SUBMIT_VERIFY_END_POINT}` + instnttxnid;
+            const header = new Headers();
+            header.append('Content-Type', 'application/json');
+            const formInput = JSON.stringify(data);
+            const requestOptions = {
+                method: 'PUT',
+                headers: header,
+                body: formInput,
+                redirect: 'follow',
+            };
             try{
-                await submitTransaction(requestedUrlObject(url,data));
+                await submitTransaction(url,requestOptions);
             }catch(error){
                 expect(error.error).toMatchObject(apiErrorMessage);
             }
@@ -113,6 +164,7 @@ describe('Get Submit Transaction When Getting No Response From API Calling ',()=
         })
         afterAll(()=>{
             global.fetch = unmockedErrorFetch;
+            global.Headers = unmockedHeaders;
         })
     });
 
@@ -130,32 +182,44 @@ describe('SubmitSignupData',()=>{
     })
     it('should return proper response after submit transaction',()=>{
         const apiSuccessResponse = {instnt: {},ok:200};
-        window.Request =jest.fn().mockImplementation(()=>{return {}})
+        //window.Request =jest.fn().mockImplementation(()=>{return {}})
         // adding mock for fetch request
         global.fetch=jest.fn(()=>
         Promise.resolve({
             json: ()=>Promise.resolve(apiSuccessResponse)
-        }))
+        }));
+        // define `append` as a mocked fn
+        const append = jest.fn();
+        // set test `Headers`
+        global.Headers = () => ({
+            append: append,
+        });
         const submitSignupDataResponse= submitSignupData(data,instnttxnid,workflowId);
         expect(submitSignupDataResponse).toBeDefined();
-        expect(window.Request).toHaveBeenCalledTimes(1);
+        //expect(window.Request).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledTimes(1);
         fetch.mockClear();
     })
 
     it('should return error response after submit transaction',()=>{
         const apiErrorMessage = {error:'Error During Submit Transaction'};
-        window.Request =jest.fn().mockImplementation(()=>{return {}})
+        //window.Request =jest.fn().mockImplementation(()=>{return {}})
         // adding mock for fetch request
         global.fetch = jest.fn(() => Promise.reject({
             error: apiErrorMessage.error
         }));
+        // define `append` as a mocked fn
+        const append = jest.fn();
+        // set test `Headers`
+        global.Headers = () => ({
+            append: append,
+        });
         try{
             submitSignupData(data,instnttxnid,workflowId);
         }catch(error){
             expect(error).toBeDefined()
         }
-        expect(window.Request).toHaveBeenCalledTimes(1);
+        //expect(window.Request).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledTimes(1);
         fetch.mockClear();
     })
@@ -177,32 +241,44 @@ describe('SubmitVerifyData',()=>{
     })
     it('should return proper response after submit transaction',()=>{
         const apiSuccessResponse = {instnt: {},ok:200};
-        window.Request =jest.fn().mockImplementation(()=>{return {}})
+        //window.Request =jest.fn().mockImplementation(()=>{return {}})
         // adding mock for fetch request
         global.fetch=jest.fn(()=>
         Promise.resolve({
             json: ()=>Promise.resolve(apiSuccessResponse)
         }))
-        const ssubmitVerifyDataResponse= submitVerifyData(data,instnttxnid,workflowId);
-        expect(ssubmitVerifyDataResponse).toBeDefined();
-        expect(window.Request).toHaveBeenCalledTimes(1);
+        // define `append` as a mocked fn
+        const append = jest.fn();
+        // set test `Headers`
+        global.Headers = () => ({
+            append: append,
+        });
+        const submitVerifyDataResponse= submitVerifyData(data,instnttxnid,workflowId);
+        expect(submitVerifyDataResponse).toBeDefined();
+        //expect(window.Request).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledTimes(1);
         fetch.mockClear();
     })
 
     it('should return error response after submit transaction',()=>{
         const apiErrorMessage = {error:'Error During Submit Transaction'};
-        window.Request =jest.fn().mockImplementation(()=>{return {}})
+        //window.Request =jest.fn().mockImplementation(()=>{return {}})
         // adding mock for fetch request
         global.fetch = jest.fn(() => Promise.reject({
             error: apiErrorMessage.error
         }));
+        // define `append` as a mocked fn
+        const append = jest.fn();
+        // set test `Headers`
+        global.Headers = () => ({
+            append: append,
+        });
         try{
             submitVerifyData(data,instnttxnid,workflowId);
         }catch(error){
             expect(error).toBeDefined()
         }
-        expect(window.Request).toHaveBeenCalledTimes(1);
+        //expect(window.Request).toHaveBeenCalledTimes(1);
         expect(fetch).toHaveBeenCalledTimes(1);
         fetch.mockClear();
     })

@@ -3,7 +3,6 @@ import { global }from './global';
 import { Buffer } from 'buffer';
 import { SDK_VERSION } from '../../version';
 
-export const BASE_URL = 'https://dev2-api.instnt.org';
 export const SUBMIT_VERIFY_END_POINT = '/public/transactions/verify/';
 export const SUBMIT_SIGNUP_END_POINT = '/public/transactions/';
 export const SEND_OTP = '/otp';
@@ -16,9 +15,18 @@ export const submitSignupData = async (data: { [key: string]: any; } | undefined
     data['instnttxnid'] = instnttxnid;
     data['form_key'] = workflowId;
   }
+  const BASE_URL = (global as any).instnt.serviceURL;
   const url =  `${BASE_URL}${SUBMIT_SIGNUP_END_POINT}` + instnttxnid;
-  const submitRequest =getRequestUrl(url,data)
-  return await submitTransaction(submitRequest);
+  const header = new Headers();
+  header.append('Content-Type', 'application/json');
+  const formInput = JSON.stringify(data);
+  const requestOptions = {
+    method: 'PUT',
+    headers: header,
+    body: formInput,
+    redirect: 'follow',
+  };
+  return await submitTransaction(url,requestOptions);
 }
 
 submitSignupData.propType = {
@@ -30,9 +38,18 @@ submitSignupData.propType = {
 export const submitVerifyData = async (data:{[x:string]:any}, instnttxnid: string) => {
   data['instnt_token'] = getToken();
   data['instnttxnid'] = instnttxnid;
+  const BASE_URL = (global as any).instnt.serviceURL;
   const url = `${BASE_URL}${SUBMIT_VERIFY_END_POINT}` + instnttxnid;
-  const submitRequest = getRequestUrl(url,data);
-  return await submitTransaction(submitRequest);
+  const header = new Headers();
+  header.append('Content-Type', 'application/json');
+  const formInput = JSON.stringify(data);
+  const requestOptions = {
+    method: 'PUT',
+    headers: header,
+    body: formInput,
+    redirect: 'follow',
+  };
+  return await submitTransaction(url,requestOptions);
 }
 
 submitVerifyData.propType = {
@@ -59,7 +76,7 @@ getRequestUrl.propType = {
 };
 
 
-const getToken = () => {
+export const getToken = () => {
     const _g = (global as any)
     if(!_g.instnt || !_g.instnt.workflowId || !_g.instnt.instnttxnid) {
       throw new Error("Instnt not initialized properly. Please call appropriate SDK component/function to initialize Instnt.");
@@ -76,18 +93,18 @@ const getToken = () => {
     return token;
   }
 
-export const submitTransaction =  async (submitRequest: RequestInfo) => {
+export const submitTransaction =  async ( url: any, requestOptions : any) => {
   try {
-    const response = await fetch(submitRequest);
+    const response = await fetch( url, requestOptions);
     if (!response && response['ok']) {
         throw new Error(`Error during submit data! status: ${response['status']}`);
     }
     const data = await response.json();
-    //console.log("submit success : " + JSON.stringify(data));
+    console.log("submit success : " + JSON.stringify(data));
     return data;
   } catch (error) {
-    //console.error('error calling submitFormURL, URL: ', submitRequest);
-    //console.error(error);
+    console.log('error calling submitFormURL, URL: ', url);
+    console.log(error);
     throw { error:error };
   }
 }
@@ -95,6 +112,7 @@ export const submitTransaction =  async (submitRequest: RequestInfo) => {
 export const sendOTP = async (mobileNumber: string | any[]) => {
     const _g = (global as any);
     const instnttxnid = _g.instnt.instnttxnid;
+    const BASE_URL = _g.instnt.serviceURL;
     //Check is mobile number field available then validate it
     if (mobileNumber && mobileNumber.length < 1) {
         console.log('<------SEND OTP API END POINT-------> INVALID MOBILE NUMBER')
@@ -121,12 +139,9 @@ export const sendOTP = async (mobileNumber: string | any[]) => {
                console.log('OTP SENT SUCCESSFULLY')
                return {ok:true,status:'success'}
             } 
-        } else {
-          console.log('OTP SENT SUCCESSFULLY')
-          return {ok:true,status:'success'}
-        }
+        } 
     } catch (error) {
-        console.log("Error while connecting to " + url, error);
+        //console.log("Error while connecting to " + url, error);
         return {ok:false,status:'error'}
     }
     return () => { }
@@ -135,6 +150,7 @@ export const sendOTP = async (mobileNumber: string | any[]) => {
 export const verifyOTP = async (mobileNumber: any, otpCode: string | any[]) => {
     const _g = (global as any);
     const instnttxnid = _g.instnt.instnttxnid;
+    const BASE_URL = _g.instnt.serviceURL;
     const url = `${BASE_URL}${SUBMIT_SIGNUP_END_POINT}${instnttxnid}${SEND_OTP}`;
     
     if (typeof otpCode != "string" || otpCode.length != 6) {
@@ -147,7 +163,6 @@ export const verifyOTP = async (mobileNumber: any, otpCode: string | any[]) => {
         "otp": otpCode,
         "is_verify": true
     }
-    console.log('url',url)
     console.log("verifyOTP requestPayload: ", requestPayload);
     try {
         const response = await fetch(url, {
@@ -158,7 +173,6 @@ export const verifyOTP = async (mobileNumber: any, otpCode: string | any[]) => {
             },
             body: JSON.stringify(requestPayload)
         });
-        console.log(response)
         const data = await response.json();
         if (response.ok) {
             if (data && data.response && data.response.errors && data.response.errors.length == 0) {
@@ -167,7 +181,6 @@ export const verifyOTP = async (mobileNumber: any, otpCode: string | any[]) => {
             }
         } 
     } catch (error) {
-        console.log("Error while connecting to " + url, error);
         return {ok:false,status:'error'}
     }
     return () => { }

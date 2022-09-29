@@ -146,6 +146,7 @@
   },
   "dependencies": {
     "@types/prop-types": "^15.7.5",
-    "buffer": "^6.0.3"
+    "buffer": "^6.0.3",
+    "yarn": "^1.22.19"
   }
 }

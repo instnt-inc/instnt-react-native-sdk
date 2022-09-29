@@ -19,8 +19,7 @@ type SignupDataType = {
 
 const SIGN_UP_ERROR = "Getting Some Error While SignUp Data";
 export default function SignupView({config, setShowSignupForm}: SignupViewProps){
-  const workflowId = 'v1663828106969043';
-  const serviceURL = 'https://dev2-api.instnt.org';
+  const [workflowId, setWorkflowId]= React.useState<string>(config.workflowId);
   const [result, setResult] = React.useState<number | undefined>();
   const [instnttxnid, setInstnttxnid] = React.useState<string>();
   const [instntResponse, setInstntResponse] = React.useState({});

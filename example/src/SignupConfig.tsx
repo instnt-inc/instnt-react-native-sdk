@@ -9,8 +9,8 @@ interface SignupConfigProps {
 }
 
 export default function SignupConfig({setConfig, setLoading}: SignupConfigProps) {
-  const [workflowId, setWorkflowId] = React.useState('v1639687041590101');
-  const [serviceURL, setServiceURL] = React.useState('https://dev2-api.instnt.org');
+  const [workflowId, setWorkflowId] = React.useState('v626673100000');
+  const [serviceURL, setServiceURL] = React.useState('https://sandbox-api.instnt.org');
   
   return (
     <View style={{flex:1, justifyContent:"center"}}>

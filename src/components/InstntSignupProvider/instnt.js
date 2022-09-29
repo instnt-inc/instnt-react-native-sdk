@@ -78,8 +78,6 @@ const submitTransaction = async (url, requestOptions) => {
   }
 };
 
-export { submitSignupData };
-
 const sendOTP = async (mobileNumber) => {
   const serviceURL = 'https://dev2-api.instnt.org';
   //Check is mobile number field available then validate it

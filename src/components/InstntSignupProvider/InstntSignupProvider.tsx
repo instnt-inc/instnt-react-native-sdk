@@ -31,9 +31,7 @@ const InstntSignupProvider = ({
   children,
 }: InstntSignupProviderProps) => {
 
-  const [instnttxnid, setInstnttxnid] = useState('');
   let visitorId = "";
-
   useEffect(() => {
     console.log(`On-boarding Instnt Initialization With React-Native SDK version ${SDK_VERSION}`)
     console.log("isAsync: " + isAsync);
@@ -58,7 +56,6 @@ const InstntSignupProvider = ({
         if(response.ok) {
           
           try {
-            setInstnttxnid(data.instnttxnid);
             console.log('instnttxnid', data.instnttxnid)
             console.log("Instnt response:");
             console.log(data);
