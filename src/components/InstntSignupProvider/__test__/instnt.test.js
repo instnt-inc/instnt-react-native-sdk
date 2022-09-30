@@ -1,5 +1,4 @@
 import {
-    BASE_URL,
     SUBMIT_VERIFY_END_POINT,
     SUBMIT_SIGNUP_END_POINT,
     getRequestUrl,
@@ -11,6 +10,8 @@ import {
   } from '../instnt_library';
 import { setGlobalVar,globalVarModel} from '../global';
 import { data, instnttxnid, workflowId } from '../__mock__/instnt.mock';
+
+const BASE_URL = 'https://dev2-api.instnt.org';
 
 const requestedUrlObject = (url,data)=>{
     if(url && url.length){
