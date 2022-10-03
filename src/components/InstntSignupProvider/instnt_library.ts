@@ -83,7 +83,7 @@ export const getToken = () => {
     }
     const data = ({} as any);
     data['form_key'] = _g.instnt.workflowId;
-    data['fingerprint'] = "{visitorId: " + _g.instnt.visitorId + "}";
+    data['fingerprint'] = '{"visitorId": "' + _g.instnt.visitorId + '"}';
    
     if (_g.instnt.debug) {
       data['debug'] = _g.instnt.debug;
