@@ -8,15 +8,18 @@ export const SUBMIT_SIGNUP_END_POINT = '/public/transactions/';
 export const SEND_OTP = '/otp';
 
 
-export const submitSignupData = async (data: { [key: string]: any; } | undefined, instnttxnid: string | undefined, workflowId: string) => {
+export const submitSignupData = async (data: { [key: string]: any; } | undefined) => {
   console.log(`On-boarding Instnt SIGNUP With React-Native SDK version ${SDK_VERSION}`)
-  if(data){
-    data['instnt_token'] = getToken();
-    data['instnttxnid'] = instnttxnid;
-    data['form_key'] = workflowId;
+  const _instnttxnid = (global as any).instnt.instnttxnid;
+  const _workflowId = (global as any).instnt.workflowId;
+  if(!(data && _instnttxnid && _workflowId)){
+    throw new Error("Instnt not initialized properly. Please call appropriate SDK component/function to initialize Instnt.");   
   }
+  data['instnt_token'] = getToken();
+  data['instnttxnid'] = _instnttxnid;
+  data['form_key'] = _workflowId;
   const BASE_URL = (global as any).instnt.serviceURL;
-  const url =  `${BASE_URL}${SUBMIT_SIGNUP_END_POINT}` + instnttxnid;
+  const url =  `${BASE_URL}${SUBMIT_SIGNUP_END_POINT}` + _instnttxnid;
   const header = new Headers();
   header.append('Content-Type', 'application/json');
   const formInput = JSON.stringify(data);
@@ -31,31 +34,29 @@ export const submitSignupData = async (data: { [key: string]: any; } | undefined
 
 submitSignupData.propType = {
   data: PropTypes.object,
-  instnttxnid: PropTypes.string,
-  workflowId: PropTypes.string,
 };
 
-export const submitVerifyData = async (data:{[x:string]:any}, instnttxnid: string) => {
-  data['instnt_token'] = getToken();
-  data['instnttxnid'] = instnttxnid;
-  const BASE_URL = (global as any).instnt.serviceURL;
-  const url = `${BASE_URL}${SUBMIT_VERIFY_END_POINT}` + instnttxnid;
-  const header = new Headers();
-  header.append('Content-Type', 'application/json');
-  const formInput = JSON.stringify(data);
-  const requestOptions = {
-    method: 'PUT',
-    headers: header,
-    body: formInput,
-    redirect: 'follow',
-  };
-  return await submitTransaction(url,requestOptions);
-}
+// export const submitVerifyData = async (data:{[x:string]:any}, instnttxnid: string) => {
+//   data['instnt_token'] = getToken();
+//   data['instnttxnid'] = instnttxnid;
+//   const BASE_URL = (global as any).instnt.serviceURL;
+//   const url = `${BASE_URL}${SUBMIT_VERIFY_END_POINT}` + instnttxnid;
+//   const header = new Headers();
+//   header.append('Content-Type', 'application/json');
+//   const formInput = JSON.stringify(data);
+//   const requestOptions = {
+//     method: 'PUT',
+//     headers: header,
+//     body: formInput,
+//     redirect: 'follow',
+//   };
+//   return await submitTransaction(url,requestOptions);
+// }
 
-submitVerifyData.propType = {
-  data: PropTypes.object,
-  instnttxnid: PropTypes.string,
-};
+// submitVerifyData.propType = {
+//   data: PropTypes.object,
+//   instnttxnid: PropTypes.string,
+// };
 
 export const getRequestUrl = (
   url: string | Request,

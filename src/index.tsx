@@ -1,7 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 import InstntSignupProvider from './components/InstntSignupProvider/InstntSignupProvider';
 import {submitSignupData, sendOTP, verifyOTP} from './components/InstntSignupProvider/instnt_library';
-import { FingerprintJsProAgent } from './components/FingerprintJsPro/FingerprintJsProAgent'; ///FingerprintJsPro/FingerprintJsProAgent
 
 const LINKING_ERROR =
   `The package '@instnt/instnt-react-native-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -19,4 +18,4 @@ const InstntReactNativeSdk = NativeModules.InstntReactNativeSdk  ? NativeModules
     );
 
 
-export {InstntSignupProvider, submitSignupData, sendOTP,verifyOTP,FingerprintJsProAgent};
+export {InstntSignupProvider, submitSignupData, sendOTP,verifyOTP};

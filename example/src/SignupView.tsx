@@ -2,11 +2,10 @@ import React from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { InstntSignupProvider, submitSignupData, sendOTP, verifyOTP } from '@instnt/instnt-react-native-sdk';
-import { FingerprintJsProAgent } from '@instnt/instnt-react-native-sdk';
 import { Text , TextInput, ActivityIndicator, Button, Dialog, Portal, Modal, ProgressBar, List} from 'react-native-paper';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SDK_VERSION } from '../../src/version';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 interface SignupViewProps {
   config: any;
@@ -20,7 +19,6 @@ type SignupDataType = {
 const SIGN_UP_ERROR = "Getting Some Error While SignUp Data";
 export default function SignupView({config, setShowSignupForm}: SignupViewProps){
   const [workflowId, setWorkflowId]= React.useState<string>(config.workflowId);
-  const [result, setResult] = React.useState<number | undefined>();
   const [instnttxnid, setInstnttxnid] = React.useState<string>();
   const [instntResponse, setInstntResponse] = React.useState({});
   const [data, setData] = React.useState<SignupDataType>();
@@ -48,10 +46,9 @@ export default function SignupView({config, setShowSignupForm}: SignupViewProps)
   const handleSignup = async () => {
     console.log('Signup button Pressed');
     console.log(`On-boarding Instnt SIGNUP With React-Native SDK version ${SDK_VERSION}`)
-    //const tempData: any = {"city": "Natick", "country": "USA", "email": "soubhratra@instnt.org", "firstName": "Soubhratra", "mobileNumber": "+1508-494-8925", "physicalAddress": "9 Peterson Rd", "state": "MA", "surName": "Das", "zip": "01760"};
     console.log('SignUp Form Data :',data)
     setWaitingDecision(true);
-    const response: any = await submitSignupData(data, instnttxnid, workflowId);
+    const response: any = await submitSignupData(data);
     if(response && response.data && response.data.decision){
       console.log("submit response: "+ JSON.stringify(response));
       setSubmitResponse(response);

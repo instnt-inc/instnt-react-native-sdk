@@ -230,64 +230,64 @@ describe('SubmitSignupData',()=>{
     })
 })
 
-describe('SubmitVerifyData',()=>{
+// describe('SubmitVerifyData',()=>{
 
-    beforeEach(()=>{
-        globalVarModel.instnt.workflowId = '123';
-        globalVarModel.instnt.isAsync = true;
-        globalVarModel.instnt.serviceURL = 'https://test/';
-        globalVarModel.instnt.visitorId = '1';
-        globalVarModel.instnt.instnttxnid = '1234';
-          setGlobalVar(globalVarModel);
-    })
-    it('should return proper response after submit transaction',()=>{
-        const apiSuccessResponse = {instnt: {},ok:200};
-        //window.Request =jest.fn().mockImplementation(()=>{return {}})
-        // adding mock for fetch request
-        global.fetch=jest.fn(()=>
-        Promise.resolve({
-            json: ()=>Promise.resolve(apiSuccessResponse)
-        }))
-        // define `append` as a mocked fn
-        const append = jest.fn();
-        // set test `Headers`
-        global.Headers = () => ({
-            append: append,
-        });
-        const submitVerifyDataResponse= submitVerifyData(data,instnttxnid,workflowId);
-        expect(submitVerifyDataResponse).toBeDefined();
-        //expect(window.Request).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledTimes(1);
-        fetch.mockClear();
-    })
+//     beforeEach(()=>{
+//         globalVarModel.instnt.workflowId = '123';
+//         globalVarModel.instnt.isAsync = true;
+//         globalVarModel.instnt.serviceURL = 'https://test/';
+//         globalVarModel.instnt.visitorId = '1';
+//         globalVarModel.instnt.instnttxnid = '1234';
+//           setGlobalVar(globalVarModel);
+//     })
+//     it('should return proper response after submit transaction',()=>{
+//         const apiSuccessResponse = {instnt: {},ok:200};
+//         //window.Request =jest.fn().mockImplementation(()=>{return {}})
+//         // adding mock for fetch request
+//         global.fetch=jest.fn(()=>
+//         Promise.resolve({
+//             json: ()=>Promise.resolve(apiSuccessResponse)
+//         }))
+//         // define `append` as a mocked fn
+//         const append = jest.fn();
+//         // set test `Headers`
+//         global.Headers = () => ({
+//             append: append,
+//         });
+//         const submitVerifyDataResponse= submitVerifyData(data,instnttxnid,workflowId);
+//         expect(submitVerifyDataResponse).toBeDefined();
+//         //expect(window.Request).toHaveBeenCalledTimes(1);
+//         expect(fetch).toHaveBeenCalledTimes(1);
+//         fetch.mockClear();
+//     })
 
-    it('should return error response after submit transaction',()=>{
-        const apiErrorMessage = {error:'Error During Submit Transaction'};
-        //window.Request =jest.fn().mockImplementation(()=>{return {}})
-        // adding mock for fetch request
-        global.fetch = jest.fn(() => Promise.reject({
-            error: apiErrorMessage.error
-        }));
-        // define `append` as a mocked fn
-        const append = jest.fn();
-        // set test `Headers`
-        global.Headers = () => ({
-            append: append,
-        });
-        try{
-            submitVerifyData(data,instnttxnid,workflowId);
-        }catch(error){
-            expect(error).toBeDefined()
-        }
-        //expect(window.Request).toHaveBeenCalledTimes(1);
-        expect(fetch).toHaveBeenCalledTimes(1);
-        fetch.mockClear();
-    })
+//     it('should return error response after submit transaction',()=>{
+//         const apiErrorMessage = {error:'Error During Submit Transaction'};
+//         //window.Request =jest.fn().mockImplementation(()=>{return {}})
+//         // adding mock for fetch request
+//         global.fetch = jest.fn(() => Promise.reject({
+//             error: apiErrorMessage.error
+//         }));
+//         // define `append` as a mocked fn
+//         const append = jest.fn();
+//         // set test `Headers`
+//         global.Headers = () => ({
+//             append: append,
+//         });
+//         try{
+//             submitVerifyData(data,instnttxnid,workflowId);
+//         }catch(error){
+//             expect(error).toBeDefined()
+//         }
+//         //expect(window.Request).toHaveBeenCalledTimes(1);
+//         expect(fetch).toHaveBeenCalledTimes(1);
+//         fetch.mockClear();
+//     })
 
-    afterEach(()=>{
-        setGlobalVar({})
-    })
-})
+//     afterEach(()=>{
+//         setGlobalVar({})
+//     })
+// })
 
 describe('Send OTP',()=>{
     beforeEach(()=>{

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {NativeModules} from 'react-native';
 import { setGlobalVar , globalVarModel} from './global';
