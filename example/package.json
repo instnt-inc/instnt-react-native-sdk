@@ -11,13 +11,13 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@instnt/instnt-react-native-sdk": "file:..",
+    "@instnt/instnt-react-native-sdk": "^1.0.0-beta.0",
     "react": "17.0.2",
     "react-native": "0.68.2",
     "react-native-flash-message": "^0.3.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-paper": "^4.12.3",
-    "react-native-vector-icons": "^9.2.0"  
+    "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

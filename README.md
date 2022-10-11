@@ -4,8 +4,7 @@
 This documentation covers the basics functionality of Instnt React-Native SDK. In simple terms, React-Native is an open-source library that helps to create native apps for Android and iOS using React. Instnt React-Natve SDK is intended to provide a streamlined and elegant integration with your company's/institutions customer sign-up workflows built using react-native library. For a more details on Instnt's products and integrations, visit
 [Instnt's documentation library.](https://support.instnt.org/hc/en-us/articles/360055345112-Integration-Overview)
 
-[![build status]]
-[![npm version]]
+[![npm version](https://img.shields.io/npm/v/@instnt/instnt-react-native-sdk.svg?style=flat-square)](https://www.npmjs.com/package/@instnt/instnt-react-native-sdk)
 
 ### Table of Contents
 - [Prerequisites](#prerequisites)
